@@ -1,19 +1,12 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; 
+import { NavigationContainer } from '@react-navigation/native';
 
 import HomeScreen from "./App/screens/HomeScreen";
-import AddPortfolioScreen from "./App/screens/AddPortfolioScreen"
 import TransactionsScreen from "./App/screens/TransactionsScreen";
 import SettingsScreen from "./App/screens/SettingsScreen"
-import PortfoliosStack from "./App/screens/PortfoliosStack"
-import { createStackNavigator } from '@react-navigation/stack';
-import ViewPortfolioScreen from "./App/screens/ViewPortfolioScreen"
 
-
-const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App()
@@ -42,29 +35,26 @@ export default function App()
               iconName = focused ? 'settings' : 'settings-outline';
             }
 
-            // You can return any component that you like here!
+            // Can return any component here.
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}
         tabBarOptions={{
-          activeTintColor: 'dodgerblue',
+          activeTintColor: 'gold',
           inactiveTintColor: 'gray',
           activeBackgroundColor: "black",
           inactiveBackgroundColor: "black",
-
+          style:{
+            borderTopWidth:1,
+            borderTopColor:'#00000099'
+        },
         }}
       >
         <Tab.Screen name="Home" component={HomeScreen}  />
         <Tab.Screen name="Transactions" component={TransactionsScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
-        {/* <Stack.Screen name="ViewPortfolios" component={ViewPortfolioScreen} /> */}
       </Tab.Navigator>
-      {/* <Stack.Navigator>
-        <Stack.Screen name="ViewPortfolios" component={ViewPortfolioScreen} />
-      </Stack.Navigator> */}
     </NavigationContainer>
-
-    
   );
 }
 

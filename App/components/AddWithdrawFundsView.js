@@ -1,23 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet,TextInput } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { back } from 'react-native/Libraries/Animated/src/Easing';
+import { View, StyleSheet,TextInput } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';;
 
-import AppHeader from "../components/AppHeader";
-import AppText from "../components/AppText";
+import AppHeader from "./AppHeader";
+import AppText from "./AppText";
+import Screen from "./Screen";
 import AppButtonConfirm from "../components/AppButtonConfirm"
 import AppButtonCancel from "../components/AppButtonCancel"
-import Screen from "../components/Screen";
 
-export default function AddPortfolioScreen({ navigation }) 
+export default function AddWithdrawFundsView({ navigation, addFunds }) 
 {
  return (
   <Screen style={{flex:1}}>
   <View style={styles.container}>
-   <AppHeader style={{color:"black", fontWeight:"bold", marginBottom:20}}>Add Portfolio</AppHeader>
+   <AppHeader style={{color:"black", marginBottom:20}}>
+     {addFunds ? "Add Funds" : "Withdraw Funds"}
+   </AppHeader>
    
      <View style={styles.textInputGroup}>
-     <AppText style={styles.labels}>Name</AppText>
+     <AppText style={styles.labels}>Portfolio Name</AppText>
       <TextInput
             style={styles.input}
             autoCapitalize="none"
@@ -26,7 +27,7 @@ export default function AddPortfolioScreen({ navigation })
       />
      </View>
      <View style={styles.textInputGroup}>
-     <AppText style={styles.labels}>Risk</AppText>
+     <AppText style={styles.labels}>Amount</AppText>
       <TextInput
             style={styles.input}
             autoCapitalize="none"
@@ -34,28 +35,20 @@ export default function AddPortfolioScreen({ navigation })
             // onChangeText={(input) => setPassword(input)}
       />
      </View>
-     <View style={styles.textInputGroup}>
-     <AppText style={styles.labels}>Companies</AppText>
-      <TextInput
-            style={styles.input}
-            autoCapitalize="none"
-            // value={password}
-            // onChangeText={(input) => setPassword(input)}
-      />
-     </View>
-     <View style={styles.textInputGroup}>
-     <AppText style={styles.labels}>Add Funds</AppText>
-      <TextInput
-            style={styles.input}
-            autoCapitalize="none"
-            // value={password}
-            // onChangeText={(input) => setPassword(input)}
-      />
-     </View>
-    
+
       <View style={styles.buttonContainer}>
         <AppButtonCancel navigation={navigation}><AppText>Cancel</AppText></AppButtonCancel>
         <AppButtonConfirm><AppText>Confirm</AppText></AppButtonConfirm>
+      </View>
+
+
+      <View>
+        {/* <TouchableOpacity style={styles.toggleScreensButton} onPress={() => navigation.navigate("WithdrawFundsScreen")}> */}
+        <TouchableOpacity style={styles.toggleScreensButton} onPress={() => navigation.navigate(addFunds ? "WithdrawFundsScreen" : "AddFundsScreen")}>
+          <AppText style={{color:"dodgerblue"}}>
+            {addFunds ? "Withdraw Funds instead" : "Add Funds instead"}
+          </AppText>
+        </TouchableOpacity>
       </View>
    </View>
    </Screen>
@@ -87,7 +80,6 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     justifyContent:"space-between",
     alignItems:"center",
-    
     marginBottom: 24,
     padding: 4,
     width:"90%",
@@ -99,6 +91,18 @@ const styles = StyleSheet.create({
     flexDirection:"row",
     justifyContent:"space-between",
     width:"90%",
+  },
+  toggleScreensButton:
+  {
+    width:200,
+    height:40,
+    marginTop:10,
+    padding:10,
+    borderRadius:5,
+    // backgroundColor:"green",
+    justifyContent:"center",
+    alignItems:"center",
+    // backgroundColor:"dodgerblue",
   },
 })
 

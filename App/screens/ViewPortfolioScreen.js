@@ -1,34 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { createStackNavigator } from "@react-navigation/stack";
+import { Ionicons } from "@expo/vector-icons";
 
-import Screen from "../components/Screen";
 import AppHeader from "../components/AppHeader";
 import AppText from "../components/AppText";
-
+import Screen from "../components/Screen";
 import TopBanner from "../components/TopBanner";
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-// function ViewPortfolioScreen({route}) 
-// {
-//     return (
-//       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//         <Text>ViewPortfolioScreen</Text>
-//       </View>
-//     );
-// }
-
-
-function ViewPortfolioScreen({route})
+export default function ViewPortfolioScreen({route, navigation})
 {
-  // Destructuring this so that we don't have to type route.params.red etc.
+  // Destructuring this so that we don't have to type route.params.portfolioName and etc.
   const {portfolioName, space, risk, gains, amount} = route.params;
 
-  // const total = portfolioName + space + amount;
+  const [modal, setModal] = useState(false);
+
+  function addFunds({navigation})
+  {
+    setModal(true);
+    console.log("Add Funds pressed");
+    navigation.navigate("AddFundsScreen");
+  }
+
+  function withdrawFunds({navigation})
+  {
+    setModal(true);
+    console.log("Add Funds pressed");
+    navigation.navigate("WithdrawFundsScreen");
+  }
 
   return(
     <Screen style={{flex:1}}>
       <View style={styles.container}>
-        <TopBanner>{portfolioName}</TopBanner>
+        <TopBanner navigation={navigation}>{portfolioName}</TopBanner>
         <View style={styles.portfolioDetails}>
           <View>
             <AppHeader style={{color:"white", fontWeight:"bold"}}>{space}</AppHeader>
@@ -38,21 +43,24 @@ function ViewPortfolioScreen({route})
             </View>
           </View>
           <View style={{flexDirection:"column-reverse"}}>
-            <AppText style={{fontWeight:"bold"}}>Balance: {amount}</AppText>
+            <AppText style={{fontSize:20, fontWeight:"bold"}}>Balance: {amount}</AppText>
           </View>
         </View>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.addFundsButton}>
+          <TouchableOpacity style={styles.addFundsButton} onPress={() => addFunds({navigation})}>
             <AppText>Add Funds</AppText>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.withdrawFundsButton}>
+          <TouchableOpacity style={styles.withdrawFundsButton} onPress={() => withdrawFunds({navigation})}>
             <AppText>Withdraw Funds</AppText>
           </TouchableOpacity>
         </View>
       </View>
     </Screen>
   )
+
 }
+
+
 
 const styles = StyleSheet.create({
   container: 
@@ -104,4 +112,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ViewPortfolioScreen;
+// export default ViewPortfolioScreen;

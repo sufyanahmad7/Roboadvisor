@@ -1,8 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import { Text, View, StyleSheet, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import * as SQLite from 'expo-sqlite';
 
 import AppText from "../components/AppText";
 import AppHeader from "../components/AppHeader";
@@ -11,6 +12,9 @@ import TopBanner from "../components/TopBanner";
 
 import AddPortfolioScreen from "../screens/AddPortfolioScreen";
 import ViewPortfolioScreen from "../screens/ViewPortfolioScreen";
+import AddFundsScreen from "../screens/AddFundsScreen";
+import WithdrawFundsScreen from "../screens/WithdrawFundsScreen";
+import { useScrollToTop } from "@react-navigation/native";
 
 // <MaterialCommunityIcons name="excavator" size={24} color="yellow" />
 // <MaterialCommunityIcons name="shield-account-outline" size={24} color="yellow" />
@@ -49,28 +53,55 @@ const portfolios =
   },
 ];
 
-export default function HomeScreen() 
+export default function HomeScreen({navigation}) 
 {
+  const [modal, setModal] = useState(false);
 
-const portfoliosAsObjects = portfolios.map((item) => 
-{
-  return {
-    portfolioName: item.portfolioName,
-    space: item.space,
-    risk: item.risk,
-    gains: item.gains,
-    amount: item.amount,
+  const portfoliosAsObjects = portfolios.map((item) => 
+  {
+    return {
+      portfolioName: item.portfolioName,
+      space: item.space,
+      risk: item.risk,
+      gains: item.gains,
+      amount: item.amount,
+    };
+  });
+
+  const Rectangle = () => 
+  {
+    return (
+      <View style={styles.blogPostThumbnail}>
+        <AppText style={{fontSize:15}}>Blog Post Thumbnail</AppText>
+      </View>
+    );
   };
- });
 
-// The component that displays all of HomeScreen.
-function displayListPortfolios({navigation}) 
-{
+  function addPortfolio({navigation})
+  {
+    setModal(true);
+    console.log("Add Portfolio pressed");
+    navigation.navigate("AddPortfolioScreen");
+  }
+
+  function viewPortfolio({navigation}, item)
+  {
+    setModal(false);
+    console.log("View portfolio pressed");
+    navigation.navigate("ViewPortfolioScreen", item);
+  }
+
+// This component displays all of HomeScreen.
+  function displayListPortfolios({navigation}) 
+  {
   const renderPortfolios = ({ item }) => 
   {
     return (
-      // <TouchableOpacity onPress={() => navigation.navigate("DetailsScreen", { ...item })}>
-      <TouchableOpacity onPress={() => navigation.navigate("ViewPortfolioScreen", {...item})}>
+      // The blanked out code below simply navigates to the page with the item object.
+      // <TouchableOpacity onPress={() => navigation.navigate("ViewPortfolioScreen", {...item})}>
+
+      // THe code below differs from the above coz we're calling the function AND sending both navigation and item parameters to the next screen.
+      <TouchableOpacity onPress={() => viewPortfolio({navigation}, {...item})}>
         <View
           style={{
             padding: 10,
@@ -94,7 +125,6 @@ function displayListPortfolios({navigation})
           <View style={{width:"30%", justifyContent:"center", alignItems:"center"}}>
             <Text style={{color:"white"}}>{item.amount}</Text>
           </View>
-          {/* <View>{item.risk}</View> */}
 
           {/* <TouchableOpacity onPress={() => deleteNote(item.id)}>
             <Ionicons name="trash" size={16} color="#944" />
@@ -104,20 +134,7 @@ function displayListPortfolios({navigation})
     );
   };
 
-  const Rectangle = () => 
-  {
-    return (
-      <View style={styles.blogPostThumbnail}>
-        <AppText style={{fontSize:15}}>Blog Post Thumbnail</AppText>
-      </View>
-    );
-  };
 
-  function addPortfolio()
-  {
-    console.log("Add Portfolio pressed");
-    navigation.navigate("AddPortfolioScreen");
-  }
 
   return (
     <Screen style={{flex:1}}>
@@ -150,9 +167,10 @@ function displayListPortfolios({navigation})
               />
             </View>
 
-            <TouchableOpacity style={styles.addPortfolioButton}>
-              <AppText style={{fontSize:14}} onPress={addPortfolio}>Add Portfolio</AppText>
+            <TouchableOpacity style={styles.addPortfolioButton}  onPress={() => addPortfolio({navigation})}>
+              <AppText style={{fontSize:14}}>Add Portfolio</AppText>
             </TouchableOpacity>
+            
           
             <View style={{borderBottomColor:'#F8F4F450', borderBottomWidth:1, marginTop:15}} />
             
@@ -168,17 +186,19 @@ function displayListPortfolios({navigation})
       </View>
     </Screen>
   );
-}
+  }
 
 const Stack = createStackNavigator();
 
-
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={displayListPortfolios} options={{headerShown: false}} />
-      <Stack.Screen name="ViewPortfolioScreen" component={ViewPortfolioScreen} options={{headerShown:false}} />
-    </Stack.Navigator>
-  );
+return (
+  <Stack.Navigator mode={modal ? "modal" : "card"}>
+    <Stack.Screen name="Home" component={displayListPortfolios} options={{headerShown: false}} style={{flex:1}} />
+    <Stack.Screen name="ViewPortfolioScreen" component={ViewPortfolioScreen} options={{headerShown:false}} />
+    <Stack.Screen name="AddPortfolioScreen" component={AddPortfolioScreen} options={{headerShown:false}} />
+    <Stack.Screen name="AddFundsScreen" component={AddFundsScreen} options={{headerShown:false}} />
+    <Stack.Screen name="WithdrawFundsScreen" component={WithdrawFundsScreen} options={{headerShown:false}} />
+  </Stack.Navigator>
+);
 }
 
 const styles = StyleSheet.create({
@@ -252,3 +272,5 @@ const styles = StyleSheet.create({
     color:"white",
   }
 });
+
+
