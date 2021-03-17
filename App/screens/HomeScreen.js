@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { Text, View, StyleSheet, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as SQLite from 'expo-sqlite';
 
 import AppText from "../components/AppText";
 import AppHeader from "../components/AppHeader";
@@ -14,59 +14,23 @@ import AddPortfolioScreen from "../screens/AddPortfolioScreen";
 import ViewPortfolioScreen from "../screens/ViewPortfolioScreen";
 import AddFundsScreen from "../screens/AddFundsScreen";
 import WithdrawFundsScreen from "../screens/WithdrawFundsScreen";
-import { useScrollToTop } from "@react-navigation/native";
+
+const API = "https://sufyanahmad3.pythonanywhere.com";
+const API_PORTFOLIOS = "/portfolios";
+// const API_TRANSACTIONS = "/transactions";
 
 // <MaterialCommunityIcons name="excavator" size={24} color="yellow" />
 // <MaterialCommunityIcons name="shield-account-outline" size={24} color="yellow" />
 // <MaterialCommunityIcons name="medical-bag" size={24} color="yellow" />
 // <MaterialCommunityIcons name="excavator" size={24} color="yellow" />
 
-const portfolios = 
-[
-  {
-    portfolioName:"Portfolio A",
-    space:"Med-Tech",
-    risk:"Low",
-    gains:"$19000",
-    amount:"$5000",
-  },
-  {
-    portfolioName:"Portfolio B",
-    space:"Insur-Tech",
-    risk:"Low",
-    gains:"$42000",
-    amount:"$2000",
-  },
-  {
-    portfolioName:"Portfolio C",
-    space:"Big Tech - FANG",
-    risk:"Medium",
-    gains:"$900",
-    amount:"$50000",
-  },
-  {
-    portfolioName:"Portfolio D",
-    space:"Construction",
-    risk:"High",
-    gains:"$1100",
-    amount:"$10000",
-  },
-];
-
 export default function HomeScreen({navigation}) 
 {
   const [modal, setModal] = useState(false);
+  const [portfolios, setPortfolios] = useState([]);
+  const [totalbalance, setTotalBalance] = useState(0);
 
-  const portfoliosAsObjects = portfolios.map((item) => 
-  {
-    return {
-      portfolioName: item.portfolioName,
-      space: item.space,
-      risk: item.risk,
-      gains: item.gains,
-      amount: item.amount,
-    };
-  });
+ 
 
   const Rectangle = () => 
   {
@@ -90,6 +54,70 @@ export default function HomeScreen({navigation})
     console.log("View portfolio pressed");
     navigation.navigate("ViewPortfolioScreen", item);
   }
+
+  // useEffect(() => 
+  // {
+  //   return loadTotalBalance;
+  // }, [])
+
+  // async function loadTotalBalance() 
+  // {
+  //   console.log(" --- Loading Portfolios --- ");
+  //   try 
+  //   {
+  //     const response = await axios.post(API + API_PORTFOLIOS);
+  //     console.log("Loading total balance!");
+  //     setTotalBalance(response.data);
+
+  //     // console.log(response.data);
+  //     // console.log(response.data.length);
+  //     // console.log(response.data[0].balance);
+  //   } 
+  //   catch (error) 
+  //   {
+  //     console.log("Cannot get portfolios!");
+  //     console.log(error.response);
+  //   }
+  // }
+
+  useEffect(() => 
+  {
+    return loadPortfolios;
+  }, [])
+
+  async function loadPortfolios() 
+  {
+    console.log(" --- Loading Portfolios --- ");
+    try 
+    {
+      const response = await axios.post(API + API_PORTFOLIOS);
+      console.log("Retrieving portfolios!");
+      setPortfolios(response.data);
+      // console.log(portfolios);
+
+      portfolios.map((item) => 
+      {
+        return {
+          portfolioid: item.portfolioid,
+          portfolioname: item.portfolioname,
+          space: item.space,
+          risk_appetite: item.risk_appetite,
+          gains: item.gains,
+          balance: item.balance,
+        };
+      });
+      // console.log(response.data);
+      // console.log(response.data.length);
+      // console.log(response.data[0].balance);
+    } 
+    catch (error) 
+    {
+      console.log("Cannot get portfolios!");
+      console.log(error.response);
+    }
+    // return portfoliosAsObjects;
+  }
+  
 
 // This component displays all of HomeScreen.
   function displayListPortfolios({navigation}) 
@@ -116,14 +144,14 @@ export default function HomeScreen({navigation})
         >
           
           <View style={{width:"40%",}}>
-            <Text style={{color:"white", fontSize:16, fontWeight:"bold"}}>{item.portfolioName}</Text>
+            <Text style={{color:"white", fontSize:16, fontWeight:"bold"}}>{item.portfolioname}</Text>
             <Text style={{color:"white", marginTop:10}}>{item.space}</Text>
           </View>
           <View style={{width:"30%", justifyContent:"center", alignItems:"center"}}>
             <Text style={{color:"white"}}>{item.gains}</Text>
           </View>
           <View style={{width:"30%", justifyContent:"center", alignItems:"center"}}>
-            <Text style={{color:"white"}}>{item.amount}</Text>
+            <Text style={{color:"white"}}>{item.balance}</Text>
           </View>
 
           {/* <TouchableOpacity onPress={() => deleteNote(item.id)}>
@@ -161,9 +189,9 @@ export default function HomeScreen({navigation})
 
             <View>
               <FlatList
-                data={portfoliosAsObjects}
+                data={portfolios}
                 renderItem={renderPortfolios}
-                keyExtractor={(item) => item.name}
+                keyExtractor={(item) => item.portfolioid}
               />
             </View>
 

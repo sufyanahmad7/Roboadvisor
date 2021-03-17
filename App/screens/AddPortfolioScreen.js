@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
 import { View, Text, StyleSheet,TextInput } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { back } from 'react-native/Libraries/Animated/src/Easing';
+import axios from "axios";
 
 import AppHeader from "../components/AppHeader";
 import AppText from "../components/AppText";
@@ -9,8 +8,13 @@ import AppButtonConfirm from "../components/AppButtonConfirm"
 import AppButtonCancel from "../components/AppButtonCancel"
 import Screen from "../components/Screen";
 
+const API = "https://sufyanahmad3.pythonanywhere.com";
+const API_CREATEPORTFOLIO = "/createportfolio";
+
 export default function AddPortfolioScreen({ navigation }) 
 {
+  
+
  return (
   <Screen style={{flex:1}}>
   <View style={styles.container}>

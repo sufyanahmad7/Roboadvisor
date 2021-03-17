@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from "./App/screens/HomeScreen";
 import TransactionsScreen from "./App/screens/TransactionsScreen";
 import SettingsScreen from "./App/screens/SettingsScreen"
+import axios from "axios";
 
 const Tab = createBottomTabNavigator();
 
@@ -50,7 +51,7 @@ export default function App()
         },
         }}
       >
-        <Tab.Screen name="Home" component={HomeScreen}  />
+        <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Transactions" component={TransactionsScreen} />
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>

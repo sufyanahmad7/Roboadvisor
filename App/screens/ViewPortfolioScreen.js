@@ -12,7 +12,7 @@ import TopBanner from "../components/TopBanner";
 export default function ViewPortfolioScreen({route, navigation})
 {
   // Destructuring this so that we don't have to type route.params.portfolioName and etc.
-  const {portfolioName, space, risk, gains, amount} = route.params;
+  const {portfolioname, space, risk_appetite, gains, balance} = route.params;
 
   const [modal, setModal] = useState(false);
 
@@ -33,17 +33,17 @@ export default function ViewPortfolioScreen({route, navigation})
   return(
     <Screen style={{flex:1}}>
       <View style={styles.container}>
-        <TopBanner navigation={navigation}>{portfolioName}</TopBanner>
+        <TopBanner navigation={navigation}>{portfolioname}</TopBanner>
         <View style={styles.portfolioDetails}>
           <View>
             <AppHeader style={{color:"white", fontWeight:"bold"}}>{space}</AppHeader>
             <View>
-              <AppText style={{ marginTop:15}}>Risk: {risk}</AppText>
+              <AppText style={{ marginTop:15}}>Risk: {risk_appetite}</AppText>
               <AppText style={{ marginTop:15}}>Gains: {gains}</AppText>
             </View>
           </View>
           <View style={{flexDirection:"column-reverse"}}>
-            <AppText style={{fontSize:20, fontWeight:"bold"}}>Balance: {amount}</AppText>
+            <AppText style={{fontSize:20, fontWeight:"bold"}}>Balance: {balance}</AppText>
           </View>
         </View>
         <View style={styles.buttonContainer}>

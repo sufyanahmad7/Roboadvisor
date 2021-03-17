@@ -38,3 +38,48 @@ const styles = StyleSheet.create({
             <AppText>Add Portfolio</AppText>
           </TouchableOpacity>
       </View> */}
+
+       // for(let i=1; i <= response.data.length; i++)
+      // {
+      //   console.log(i);
+      // }
+
+
+      // const portfolios = 
+// [
+//   // {
+//   //   portfolioName: item.portfolioName,
+//   //   space: item.space,
+//   //   // risk: item.risk,
+//   //   gains: item.gains,
+//   //   balance: item.balance,
+//   // },
+//   {
+//     portfolioName:"Portfolio A",
+//     space:"Med-Tech",
+//     risk:"Low",
+//     gains:"$19000",
+//     amount:"$5000",
+//   },
+//   {
+//     portfolioName:"Portfolio B",
+//     space:"Insur-Tech",
+//     risk:"Low",
+//     gains:"$42000",
+//     amount:"$2000",
+//   },
+//   {
+//     portfolioName:"Portfolio C",
+//     space:"Big Tech - FANG",
+//     risk:"Medium",
+//     gains:"$900",
+//     amount:"$50000",
+//   },
+//   {
+//     portfolioName:"Portfolio D",
+//     space:"Construction",
+//     risk:"High",
+//     gains:"$1100",
+//     amount:"$10000",
+//   },
+// ];

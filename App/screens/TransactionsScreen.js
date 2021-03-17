@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Text, View, StyleSheet, FlatList, ScrollView, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -12,46 +13,61 @@ import TopBanner from "../components/TopBanner";
 import AddPortfolioScreen from "../screens/AddPortfolioScreen";
 import ViewPortfolioScreen from "../screens/ViewPortfolioScreen";
 
+const API = "https://sufyanahmad3.pythonanywhere.com";
+const API_TRANSACTIONS = "/transactions";
+
 // <MaterialCommunityIcons name="excavator" size={24} color="yellow" />
 // <MaterialCommunityIcons name="shield-account-outline" size={24} color="yellow" />
 // <MaterialCommunityIcons name="medical-bag" size={24} color="yellow" />
 // <MaterialCommunityIcons name="excavator" size={24} color="yellow" />
-
-const transactions = 
-[
-  {
-    portfolioName:"Portfolio A",
-    space:"Med-Tech",
-    action:"Deposit",
-    amount:"$250",
-  },
-  {
-    portfolioName:"Portfolio D",
-    space:"Construction",
-    action:"Deposit",
-    amount:"$190",
-  },
-  {
-    portfolioName:"Portfolio B",
-    space:"Insur-Tech",
-    action:"Withdraw",
-    amount:"$9000",
-  },
-  
-];
-
-const transactionsAsObjects = transactions.map((item) => 
+export default function TransactionsScreen() 
 {
-  return {
-    portfolioName: item.portfolioName,
-    space: item.space,
-    action: item.action,
-    amount: item.amount,
-  };
- });
+  const [transactions, setTransactions] = useState([]);
+
+ useEffect(() => 
+  {
+    return loadTransactions;
+  }, [])
+
+  async function loadTransactions() 
+  {
+    console.log(" --- Loading Transactions --- ");
+    
+    try 
+    {
+      console.log("First try!");
+      const response = await axios.post(API + API_TRANSACTIONS);
+      console.log("After Axios");
+      console.log("Retrieving transactions!");
+      setTransactions(response.data);
+      console.log(transactions);
+
+      transactions.map((item) => 
+      {
+        return {
+          actions: item.actions,
+          amount: item.amount,
+          portfolioid: item.portfolioid,
+          portfolioname: item.portfolioname,
+          space: item.space,
+          transactionid: item.transactionid,
+        };
+      });
+
+      // console.log(response.data);
+      // console.log(response.data.length);
+      // console.log(response.data[0].balance);
+    } 
+    catch (error) 
+    {
+      console.log("Cannot get transactions!");
+      console.log(error.response);
+    }
+  }
+  
 
 // The component that displays all of HomeScreen.
-function displayListPortfolios({navigation}) 
+function displayListTransactions({navigation}) 
 {
   const renderTransactions = ({ item }) => 
   {
@@ -69,13 +85,13 @@ function displayListPortfolios({navigation})
             justifyContent: "flex-start",
           }}
         >
-          
+        
           <View style={{width:"40%",}}>
-            <Text style={{color:"white", fontSize:16, fontWeight:"bold"}}>{item.portfolioName}</Text>
+            <Text style={{color:"white", fontSize:16, fontWeight:"bold"}}>{item.portfolioname}</Text>
             <Text style={{color:"white", marginTop:10}}>{item.space}</Text>
           </View>
           <View style={{width:"30%", justifyContent:"center", alignItems:"center"}}>
-            <Text style={{color:"white"}}>{item.action}</Text>
+            <Text style={{color:"white"}}>{item.actions}</Text>
           </View>
           <View style={{width:"30%", justifyContent:"center", alignItems:"center"}}>
             <Text style={{color:"white"}}>{item.amount}</Text>
@@ -106,9 +122,9 @@ function displayListPortfolios({navigation})
 
             <View>
               <FlatList
-                data={transactionsAsObjects}
+                data={transactions}
                 renderItem={renderTransactions}
-                keyExtractor={(item) => item.name}
+                keyExtractor={(item) => item.transactionid}
               />
             </View>
             
@@ -121,12 +137,9 @@ function displayListPortfolios({navigation})
 
 const Stack = createStackNavigator();
 
-export default function HomeScreen() 
-{
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={displayListPortfolios} options={{headerShown: false}} />
-      <Stack.Screen name="ViewPortfolioScreen" component={ViewPortfolioScreen} options={{headerShown:false}} />
+      <Stack.Screen name="TransactionsScreen" component={displayListTransactions} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 }
