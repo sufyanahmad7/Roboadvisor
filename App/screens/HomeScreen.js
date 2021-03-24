@@ -1,14 +1,12 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, StyleSheet, FlatList, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, FlatList, ScrollView, TouchableOpacity, Touchable } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import axios from "axios";
-import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import AppText from "../components/AppText";
 import AppHeader from "../components/AppHeader";
 import Screen from "../components/Screen";
-import TopBanner from "../components/TopBanner";
 
 import AddPortfolioScreen from "../screens/AddPortfolioScreen";
 import ViewPortfolioScreen from "../screens/ViewPortfolioScreen";
@@ -17,20 +15,18 @@ import WithdrawFundsScreen from "../screens/WithdrawFundsScreen";
 
 const API = "https://sufyanahmad3.pythonanywhere.com";
 const API_PORTFOLIOS = "/portfolios";
-// const API_TRANSACTIONS = "/transactions";
 
 // <MaterialCommunityIcons name="excavator" size={24} color="yellow" />
 // <MaterialCommunityIcons name="shield-account-outline" size={24} color="yellow" />
 // <MaterialCommunityIcons name="medical-bag" size={24} color="yellow" />
-// <MaterialCommunityIcons name="excavator" size={24} color="yellow" />
 
 export default function HomeScreen({navigation}) 
 {
   const [modal, setModal] = useState(false);
+  // To store all the portfolios for loading into flatlist.
   const [portfolios, setPortfolios] = useState([]);
-  const [totalbalance, setTotalBalance] = useState(0);
-
- 
+  // To store the total amount of all portfolios and display in
+  const [totalBalance, setTotalBalance] = useState(0);
 
   const Rectangle = () => 
   {
@@ -55,35 +51,40 @@ export default function HomeScreen({navigation})
     navigation.navigate("ViewPortfolioScreen", item);
   }
 
-  // useEffect(() => 
-  // {
-  //   return loadTotalBalance;
-  // }, [])
-
-  // async function loadTotalBalance() 
-  // {
-  //   console.log(" --- Loading Portfolios --- ");
-  //   try 
-  //   {
-  //     const response = await axios.post(API + API_PORTFOLIOS);
-  //     console.log("Loading total balance!");
-  //     setTotalBalance(response.data);
-
-  //     // console.log(response.data);
-  //     // console.log(response.data.length);
-  //     // console.log(response.data[0].balance);
-  //   } 
-  //   catch (error) 
-  //   {
-  //     console.log("Cannot get portfolios!");
-  //     console.log(error.response);
-  //   }
-  // }
-
   useEffect(() => 
   {
-    return loadPortfolios;
+    loadTotalBalance(); loadPortfolios(); 
   }, [])
+  
+
+  async function loadTotalBalance() 
+  {
+    console.log(" --- Loading Total Balance --- ");
+    try 
+    {
+      const response = await axios.post(API + API_PORTFOLIOS);
+      console.log("Loading total balance!");
+    
+      let total = 0;
+      response.data.map( (item) => { total += item.balance });
+      console.log(total);
+      setTotalBalance(total);
+      // console.log(response.data);
+      // console.log(response.data.length);
+      
+
+    } 
+    catch (error) 
+    {
+      console.log("Cannot get sum of balances!");
+      console.log(error.response);
+    }
+  }
+
+  // useEffect(() => 
+  // {
+  //   loadPortfolios();
+  // })
 
   async function loadPortfolios() 
   {
@@ -145,6 +146,7 @@ export default function HomeScreen({navigation})
           
           <View style={{width:"40%",}}>
             <Text style={{color:"white", fontSize:16, fontWeight:"bold"}}>{item.portfolioname}</Text>
+            {/* <Text style={{color:"white", marginTop:10}}>{item.portfolioid}{item.space}</Text> */}
             <Text style={{color:"white", marginTop:10}}>{item.space}</Text>
           </View>
           <View style={{width:"30%", justifyContent:"center", alignItems:"center"}}>
@@ -175,16 +177,22 @@ export default function HomeScreen({navigation})
               <AppText style={{color: "#F8F4F480"}}>Total Net Worth</AppText>
             </View>
             <View style={styles.topBannerValues}>
-              <AppText style={{fontSize:24, fontWeight:"bold"}}>$63000</AppText>
-              <AppText style={{fontSize:24, fontWeight:"bold"}}>$10000</AppText>
+              <AppText style={{fontSize:24, fontWeight:"bold"}}>$0</AppText>
+              <AppText style={{fontSize:24, fontWeight:"bold"}}>${totalBalance}</AppText>
             </View>
           </View>
+          
           <View>
-            <AppHeader style={{margin: 10}}>My Portfolios</AppHeader>
+            <View style={{flexDirection:"row", justifyContent:"space-between"}}>
+              <AppHeader style={{margin: 10}}>My Portfolios (SGD)</AppHeader>
+              <TouchableOpacity onPress={loadPortfolios}>
+                <AppText style={{marginRight: 10, marginTop: 12.5, color:"dodgerblue"}}>Refresh</AppText>
+              </TouchableOpacity>
+            </View>
             <View style={styles.flatListHeaders}>
               <View style={{width:"40%"}}><AppText style={{color: "#F8F4F480", fontSize:14}}>Portfolio Name</AppText></View>
               <View style={{width:"30%", alignItems:"center"}}><AppText style={{color: "#F8F4F480", fontSize:14}}>Gains</AppText></View>
-              <View style={{width:"30%", alignItems:"center"}}><AppText style={{color: "#F8F4F480", fontSize:14}}>Amount (SGD)</AppText></View>
+              <View style={{width:"30%", alignItems:"center"}}><AppText style={{color: "#F8F4F480", fontSize:14}}>Amount</AppText></View>
             </View>
 
             <View>
@@ -205,6 +213,7 @@ export default function HomeScreen({navigation})
             <AppHeader style={{margin: 10}}>Smartcademy</AppHeader>
             
             <View style={styles.smartcademyItems}>
+                <Rectangle />
                 <Rectangle />
                 <Rectangle />
             </View>         
@@ -252,17 +261,19 @@ const styles = StyleSheet.create({
   blogPostThumbnail: 
   {
     width: "47.5%",
+    width: "96%",
     height: 110,
     backgroundColor: "#FFFFFF40",
     borderRadius:10,
     justifyContent:"center",
     alignItems:"center",
-
+    marginBottom:10,
   },
   smartcademyItems:
   {
-    flexDirection:"row", 
-    marginBottom:20,
+    flexDirection:"column",
+    alignItems:"center", 
+    // marginBottom:20,
     marginTop:10,
     marginHorizontal:10, 
     justifyContent:"space-between",
@@ -271,7 +282,7 @@ const styles = StyleSheet.create({
   topBanner:
   {
     backgroundColor:"#38B6FF50",
-    height: "12%",
+    height: 75,
     width: "100%",
   },
   topBannerHeaders:

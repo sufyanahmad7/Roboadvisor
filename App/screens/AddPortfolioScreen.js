@@ -18,6 +18,8 @@ export default function AddPortfolioScreen({ navigation })
   const [riskAppetite, setRiskAppetite] = useState("");
   const [space, setSpace] = useState("");
   const [addFunds, setAddFunds] = useState(0);
+  const [addGains, setAddGains] = useState(0);
+  const [resultText, setResultText] = useState("");
 
   async function addPortfolio() 
   {
@@ -33,13 +35,15 @@ export default function AddPortfolioScreen({ navigation })
         space,
         addFunds
       });
-      console.log("Success adding portfolio!");
+      setResultText("Successfully added portfolio.");
+      console.log("Successfully added portfolio.");
+      navigation.goBack();
       console.log(response);
-  
     } 
     catch (error) 
     {
-      console.log("Error adding portfolio!");
+      setResultText("Error adding portfolio.");
+      console.log("Error adding portfolio.");
       console.log(error.response);
       setErrorText(error.response.data.description);
     }
@@ -86,6 +90,9 @@ export default function AddPortfolioScreen({ navigation })
             value={addFunds}
             onChangeText={(input) => setAddFunds(input)}
       />
+     </View>
+     <View>
+      <Text>{resultText}</Text>
      </View>
     
       <View style={styles.buttonContainer}>

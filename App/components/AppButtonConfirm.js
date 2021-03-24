@@ -1,9 +1,9 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
 
-function AppButtonConfirm({ children, style }) 
+function AppButtonConfirm({ children, style, onPress }) 
 {
-  return <TouchableOpacity style={[styles.button, style]}>{children}</TouchableOpacity>;
+  return <TouchableOpacity onPress={onPress} style={[styles.button, style]}>{children}</TouchableOpacity>;
 }
 
 const styles = StyleSheet.create({

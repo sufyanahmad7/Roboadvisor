@@ -6,7 +6,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import HomeScreen from "./App/screens/HomeScreen";
 import TransactionsScreen from "./App/screens/TransactionsScreen";
 import SettingsScreen from "./App/screens/SettingsScreen"
-import axios from "axios";
+
+// Ignore all warnings.
+import { LogBox } from 'react-native'
+LogBox.ignoreAllLogs(true)
 
 const Tab = createBottomTabNavigator();
 

@@ -12,21 +12,22 @@ import TopBanner from "../components/TopBanner";
 export default function ViewPortfolioScreen({route, navigation})
 {
   // Destructuring this so that we don't have to type route.params.portfolioName and etc.
-  const {portfolioname, space, risk_appetite, gains, balance} = route.params;
+  const {portfolioid, portfolioname, space, risk_appetite, gains, balance} = route.params;
 
   const [modal, setModal] = useState(false);
 
-  function addFunds({navigation})
+  function addFunds({navigation, addFunds=true})
   {
     setModal(true);
     console.log("Add Funds pressed");
-    navigation.navigate("AddFundsScreen");
+    console.log(portfolioid);
+    navigation.navigate("AddFundsScreen", portfolioid);
   }
 
-  function withdrawFunds({navigation})
+  function withdrawFunds({navigation, addFunds=false})
   {
     setModal(true);
-    console.log("Add Funds pressed");
+    console.log("Withdraw Funds pressed");
     navigation.navigate("WithdrawFundsScreen");
   }
 
@@ -38,6 +39,8 @@ export default function ViewPortfolioScreen({route, navigation})
           <View>
             <AppHeader style={{color:"white", fontWeight:"bold"}}>{space}</AppHeader>
             <View>
+            {/* <AppText style={{ marginTop:15}}>PortfolioID: {portfolioid}</AppText> */}
+            <AppText style={{ marginTop:15}}>Portfolio ID: {portfolioid}</AppText>
               <AppText style={{ marginTop:15}}>Risk: {risk_appetite}</AppText>
               <AppText style={{ marginTop:15}}>Gains: {gains}</AppText>
             </View>

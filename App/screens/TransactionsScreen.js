@@ -26,7 +26,7 @@ export default function TransactionsScreen()
 
  useEffect(() => 
   {
-    return loadTransactions;
+    loadTransactions();
   }, [])
 
   async function loadTransactions() 
@@ -109,7 +109,16 @@ function displayListTransactions({navigation})
   return (
     <Screen style={{flex:1}}>
       <View style={styles.container}>
-        <TopBanner>Transactions</TopBanner>
+        {/* <TopBanner navigation={navigation}>Transactions</TopBanner> */}
+        
+        
+        <View style={[styles.topBanner]}>
+          <View style={{flexDirection:"row", alignItems:"center"}}>
+              <AppText style={styles.topBannerText}>Transactions</AppText>
+          </View>
+        </View>
+        
+        
         <ScrollView>
           
           <View>
@@ -185,9 +194,16 @@ const styles = StyleSheet.create({
   },
   topBanner:
   {
+    justifyContent:"center",
     backgroundColor:"#38B6FF50",
-    height: "12%",
+    height: 75,
     width: "100%",
+  },
+  topBannerText:
+  {
+      fontSize:24, 
+      fontWeight:"bold",
+      marginLeft:10,
   },
   topBannerHeaders:
   {

@@ -23,12 +23,10 @@ function TopBanner({ children, style, navigation })
 const styles = StyleSheet.create({
     topBanner:
     {
-    //   backgroundColor:'#8438FF50',
-    //   backgroundColor:'#yellow',
-      backgroundColor:"#38B6FF50",
-      height: "12%",
-      width: "100%",
       justifyContent:"center",
+      backgroundColor:"#38B6FF50",
+      height: 75,
+      width: "100%",
     },
     text:
     {
@@ -39,3 +37,5 @@ const styles = StyleSheet.create({
 });
 
 export default TopBanner;
+
+
