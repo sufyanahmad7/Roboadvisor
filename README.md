@@ -1,22 +1,22 @@
 # SMU_CapstoneProject_RoboadvisorApp
 
-## Introduction
+## :book: Introduction
 
-The fintech :moneybag: industry has been disrupted. We’re seeing seismic shifts in the ways which people grow their money. Conventional banking and investing methods are now replaced with digital banks and roboadvisors.
+The fintech industry has been disrupted. We’re seeing seismic shifts in the ways which people grow their money. Conventional banking and investing methods are now replaced with digital banks and roboadvisors.
 
 However, as a person of faith, I can only invest in shariah-compliant products. Hence, my project is about developing a shariah-compliant roboadvisor app that can serve this demographic, especially in SEA.
 
-## Tech Stack
+## :computer: Tech Stack
 
 Figma, Trello, Git, JS, ReactNative, Python (Flask API), SQLite.
 
-## Key Features (App Ready)
+## :white_check_mark: Key Features (App Ready)
 
 1. Browse portfolios
 2. View individual portfolio
 3. Create new portfolio with amount
   
-## Limitations
+## :x: Limitations
 
 1. No register and login features
 2. No add and withdraw features
@@ -31,7 +31,7 @@ Figma, Trello, Git, JS, ReactNative, Python (Flask API), SQLite.
 5. Display live data (that refreshes every 5s) through APIs
 6. Push to AWS
 
-## Reflections
+## :bowtie: Reflections
 
 React Native was challenging; the learning curve was far steeper than learning PHP (Laravel). There were moments when I was stuck with no end in mind. However, I managed to resolve errors and bugs by making Google my best friend and posting in StackOverflow, and of course with some help from my trainers. Moving forward, this is an app which I am passionate about and will likely continue working on it in the near future.
 
