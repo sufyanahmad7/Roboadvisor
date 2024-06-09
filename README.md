@@ -28,7 +28,7 @@ However, as a person of faith, I can only invest in shariah-compliant products. 
 2. No add and withdraw features.
 3. Dummy Settings tab.
 	
-## Future improvements
+## :runner: Future improvements
 
 1. Work on existing limitations.
 2. Improve the graphics and display (perhaps add more graphics and icons as currently the app is texty).
