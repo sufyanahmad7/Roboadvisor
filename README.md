@@ -1,4 +1,4 @@
-# SMU_CapstoneProject_RoboadvisorApp
+Roboadvisor
 
 ## :book: Introduction
 
