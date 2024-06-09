@@ -8,7 +8,13 @@ However, as a person of faith, I can only invest in shariah-compliant products. 
 
 ## :computer: Tech Stack
 
-Figma, Trello, Git, JS, ReactNative, Python (Flask API), SQLite.
+1. Design = Figma
+2. Project management = Trello
+3. Version tracking = Git
+4. Database = SQL Lite
+5. Backend = Python (Flask API)
+6. Frontend = JS / ReactNative
+7. Cloud hosting = Heroku
 
 ## :white_check_mark: Key Features (App Ready)
 
